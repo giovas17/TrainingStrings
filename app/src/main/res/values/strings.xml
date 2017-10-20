@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TrainingStrings</string>
+    <string name="simple_string">String: %2$s, Number: %1$04d</string>
+    <string name="simple_date">date: %1$tF \nDate2: %1$tD</string>
+</resources>

@@ -1,0 +1,53 @@
+import java.text.SimpleDateFormat
+
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        config {
+            try {
+                keyAlias 'Training'
+                keyPassword KEYSTORE_PASSWORD
+                storeFile file('TrainingKeystore.jks')
+                storePassword STORE_PASSWORD
+            } catch (ignored) {
+                throw new InvalidUserDataException("You should define KEYSTORE_PASSWORD and STORE_PASSWORD in gradle.properties.")
+            }
+        }
+    }
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
+    defaultConfig {
+        applicationId "com.training.trainingstrings"
+        minSdkVersion 19
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    def date = new Date()
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField ("String", "base_url", '"http://release.com"')
+            buildConfigField ("Long", "date_string", date.getTime() + 'l')
+            signingConfig = signingConfigs.config
+        }
+        debug{
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField ("String", "base_url", '"http://172.5.67.44:8080"')
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:26.+'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0'
+    testCompile 'junit:junit:4.12'
+}
